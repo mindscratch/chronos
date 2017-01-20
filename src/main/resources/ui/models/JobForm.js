@@ -68,7 +68,8 @@ export default class JobForm {
       name: 'container.image',
       label: 'Container Image',
       description: 'Container image name',
-      sync: this.syncContainerName,
+      sync: this.
+      ,
       value: '',
       defaultValue: '',
       error: '',
@@ -323,9 +324,9 @@ export default class JobForm {
   syncContainerName(event, field) {
     let value = event.target.value
     if (value) {
-      if (!value.match(/^[a-z0-9\/:]+$/)) {
+      if (!value.match(/^[a-z0-9\/\.:]+$/)) {
         field.valid = false
-        field.error = field.label + ' must match regex /^[a-z0-9\/:]+$/'
+        field.error = field.label + ' must match regex /^[a-z0-9\/\.:]+$/'
       } else {
         field.valid = true
         field.error = ''
