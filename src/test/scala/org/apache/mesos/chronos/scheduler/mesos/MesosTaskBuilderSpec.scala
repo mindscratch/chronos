@@ -36,8 +36,7 @@ class MesosTaskBuilderSpec extends SpecificationWithJUnit with Mockito {
 
     val parameters = scala.collection.mutable.ListBuffer[Parameter]()
 
-    val container = Container("dockerImage", ContainerType.DOCKER, volumes, parameters, NetworkMode.HOST, None, networks, forcePullImage = true)
-
+    val container = Container("dockerImage", ContainerType.MESOS, volumes, parameters, NetworkMode.HOST, None, networks, forcePullImage = true)
     val constraints = Seq(
       EqualsConstraint("rack", "rack-1"),
       LikeConstraint("rack", "rack-[1-3]")
@@ -45,7 +44,7 @@ class MesosTaskBuilderSpec extends SpecificationWithJUnit with Mockito {
 
     ScheduleBasedJob("FOO/BAR/BAM", "AJob", "noop", 10L, 20L,
       "fooexec", "fooflags", "none", 7, "foo@bar.com", "Foo", "Test schedule based job", "TODAY",
-      "YESTERDAY", cpus = 2, disk = 3, mem = 5, container = container, environmentVariables = Seq(),
+      "YESTERDAY", cpus = 2, disk = 3, mem = 5, gpus = 0, container = container, environmentVariables = Seq(),
       shell = true, arguments = Seq(), softError = true, constraints = constraints)
   }
 
@@ -58,6 +57,7 @@ class MesosTaskBuilderSpec extends SpecificationWithJUnit with Mockito {
     "CHRONOS_RESOURCE_MEM" -> job.mem.toString,
     "CHRONOS_RESOURCE_CPU" -> job.cpus.toString,
     "CHRONOS_RESOURCE_DISK" -> job.disk.toString,
+    "CHRONOS_RESOURCE_GPU" -> job.gpus.toString,
     "CHRONOS_JOB_RUN_TIME" -> start.toString,
     "CHRONOS_JOB_RUN_ATTEMPT" -> attempt.toString
   )
